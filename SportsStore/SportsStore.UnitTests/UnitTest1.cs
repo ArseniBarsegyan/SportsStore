@@ -18,6 +18,8 @@ namespace SportsStore.UnitTests
         [TestMethod]
         public void Can_Paginate()
         {
+            //Создаем имитированное хранилище, внедляем его в конструктор
+            //класса ProductController, вызываем List и запрашиваем конкретную страницу
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[]
             {

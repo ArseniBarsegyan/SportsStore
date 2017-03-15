@@ -7,6 +7,11 @@ namespace SportsStore.WebUI.HtmlHelpers
 {
     public static class PagingHelpers
     {
+        //Генерирует HTML для набора ссылок на страницы,
+        //используя информацию, предоставленную в объекте
+        //PagingInfo. Func - предоставляет возможность
+        //передачи делегата, который будет использоваться для
+        //генерации ссылок на другие страницы
         public static MvcHtmlString PageLinks(
             this HtmlHelper html,
             PagingInfo pagingInfo,
