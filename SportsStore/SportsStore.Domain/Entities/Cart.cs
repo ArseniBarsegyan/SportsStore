@@ -5,7 +5,7 @@ namespace SportsStore.Domain.Entities
 {
     public class Cart
     {
-        private readonly List<CartLine> _lineCollection = new List<CartLine>();
+        private List<CartLine> _lineCollection = new List<CartLine>();
 
         public void AddItem(Product product, int quantity)
         {
