@@ -9,12 +9,12 @@ namespace SportsStore.WebUI.Controllers
     {
         //Ninject будет внедрять зависимость для хранилища товаров,
         //когда будет создавать экземпляр класса контроллеров
-        private IProductRepository repository;
+        private readonly IProductRepository _repository;
         //4 товара на странице
         public int PageSize = 4;
         public ProductController(IProductRepository productRepository)
         {
-            repository = productRepository;
+            _repository = productRepository;
         }
 
         public ViewResult List(int page = 1)
@@ -27,7 +27,7 @@ namespace SportsStore.WebUI.Controllers
             //Передает объект ProductListViewModel в качестве данных модели в представление
             ProductsListViewModel model = new ProductsListViewModel
             {
-                Products = repository.Products
+                Products = _repository.Products
                 .OrderBy(p => p.ProductId)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize),
@@ -35,7 +35,7 @@ namespace SportsStore.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count()
+                    TotalItems = _repository.Products.Count()
                 }
             };
             return View(model);

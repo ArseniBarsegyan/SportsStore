@@ -11,11 +11,11 @@ namespace SportsStore.WebUI.Infrastructure
     //этой фабрики, используемой по умолчанию
     public class NinjectControllerFactory : DefaultControllerFactory
     {
-        private IKernel ninjectKernel;
+        private readonly IKernel _ninjectKernel;
         public NinjectControllerFactory()
         {
             //Создание контейнера
-            ninjectKernel = new StandardKernel();
+            _ninjectKernel = new StandardKernel();
             AddBindings();
         }
 
@@ -23,12 +23,12 @@ namespace SportsStore.WebUI.Infrastructure
         {
             //Получение объекта контроллера из контейнера,
             //используя его тип
-            return controllerType == null ? null : (IController)ninjectKernel.Get(controllerType);
+            return controllerType == null ? null : (IController)_ninjectKernel.Get(controllerType);
         }
 
         private void AddBindings()
         {
-            ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
+            _ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
         }
     }
 }

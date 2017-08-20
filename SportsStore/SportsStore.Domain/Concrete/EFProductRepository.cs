@@ -6,10 +6,7 @@ namespace SportsStore.Domain.Concrete
 {
     public class EFProductRepository : IProductRepository
     {
-        private EFDbContext context = new EFDbContext();
-        public IQueryable<Product> Products
-        {
-            get { return context.Products; }
-        }
+        private readonly EFDbContext _context = new EFDbContext();
+        public IQueryable<Product> Products => _context.Products;
     }
 }
