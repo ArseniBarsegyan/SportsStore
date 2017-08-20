@@ -6,7 +6,6 @@ using SportsStore.WebUI.Controllers;
 using SportsStore.WebUI.HtmlHelpers;
 using SportsStore.WebUI.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -34,7 +33,7 @@ namespace SportsStore.UnitTests
             controller.PageSize = 3;
 
             //IEnumerable<Product> result = (IEnumerable<Product>)controller.List(2).Model;
-            ProductsListViewModel result = (ProductsListViewModel)controller.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)controller.List(null, 2).Model;
 
             Product[] prodArray = result.Products.ToArray();
             Assert.IsTrue(prodArray.Length == 2);
@@ -87,7 +86,7 @@ namespace SportsStore.UnitTests
             ProductController controller = new ProductController(mock.Object);
             controller.PageSize = 3;
 
-            ProductsListViewModel result = (ProductsListViewModel)controller.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)controller.List(null, 2).Model;
 
             PagingInfo pageInfo = result.PagingInfo;
             Assert.AreEqual(pageInfo.CurrentPage, 2);
