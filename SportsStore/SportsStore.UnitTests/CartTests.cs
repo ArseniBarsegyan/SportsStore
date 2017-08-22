@@ -17,13 +17,10 @@ namespace SportsStore.UnitTests
         {
             var p1 = new Product {ProductId = 1, Name = "P1"};
             var p2 = new Product { ProductId = 2, Name = "P2"};
-
             var target = new Cart();
             target.AddItem(p1, 1);
             target.AddItem(p2, 1);
-
             var results = target.Lines.ToArray();
-
             Assert.AreEqual(results.Length, 2);
             Assert.AreEqual(results[0].Product, p1);
             Assert.AreEqual(results[1].Product, p2);
@@ -32,17 +29,13 @@ namespace SportsStore.UnitTests
         [TestMethod]
         public void Can_Add_Quantity_For_Existing_Lines()
         {
-            // Arrange - create some test products
             var p1 = new Product { ProductId = 1, Name = "P1" };
             var p2 = new Product { ProductId = 2, Name = "P2" };
-            // Arrange - create a new cart
             var target = new Cart();
-            // Act
             target.AddItem(p1, 1);
             target.AddItem(p2, 1);
             target.AddItem(p1, 10);
             var results = target.Lines.OrderBy(c => c.Product.ProductId).ToArray();
-            // Assert
             Assert.AreEqual(results.Length, 2);
             Assert.AreEqual(results[0].Quantity, 11);
             Assert.AreEqual(results[1].Quantity, 1);
@@ -51,34 +44,25 @@ namespace SportsStore.UnitTests
         [TestMethod]
         public void Calculate_Cart_Total()
         {
-            // Arrange - create some test products
             var p1 = new Product { ProductId = 1, Name = "P1", Price = 100M };
             var p2 = new Product { ProductId = 2, Name = "P2", Price = 50M };
-            // Arrange - create a new cart
             var target = new Cart();
-            // Act
             target.AddItem(p1, 1);
             target.AddItem(p2, 1);
             target.AddItem(p1, 3);
             var result = target.ComputeTotalValue();
-            // Assert
             Assert.AreEqual(result, 450M);
         }
 
         [TestMethod]
         public void Can_Clear_Contents()
         {
-            // Arrange - create some test products
             var p1 = new Product { ProductId = 1, Name = "P1", Price = 100M };
             var p2 = new Product { ProductId = 2, Name = "P2", Price = 50M };
-            // Arrange - create a new cart
             var target = new Cart();
-            // Arrange - add some items
             target.AddItem(p1, 1);
             target.AddItem(p2, 1);
-            // Act - reset the cart
             target.Clear();
-            // Assert
             Assert.AreEqual(target.Lines.Count(), 0);
         }
 
@@ -88,12 +72,9 @@ namespace SportsStore.UnitTests
             var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new Product[] {new Product {ProductId = 1, Name = "P1", Category = "Apples"}}
             .AsQueryable());
-
             var cart = new Cart();
             var target = new CartController(mock.Object, null);
-            
             target.AddToCart(cart, 1, null);
-            
             Assert.AreEqual(cart.Lines.Count(), 1);
             Assert.AreEqual(cart.Lines.ToArray()[0].Product.ProductId, 1);
         }
@@ -115,11 +96,8 @@ namespace SportsStore.UnitTests
         public void Can_View_Cart_Contents()
         {
             var cart = new Cart();
-            
             var target = new CartController(null, null);
-            
             var result = (CartIndexViewModel)target.Index(cart, "myUrl").ViewData.Model;
-            
             Assert.AreSame(result.Cart, cart);
             Assert.AreEqual(result.ReturnUrl, "myUrl");
         }
@@ -159,7 +137,6 @@ namespace SportsStore.UnitTests
             cart.AddItem(new Product(), 1);
             var target = new CartController(null, mock.Object);
             var result = target.Checkout(cart, new ShippingDetails());
-            
             mock.Verify(m => m.ProcessOrder(It.IsAny<Cart>(), It.IsAny<ShippingDetails>()), Times.Once());
             Assert.AreEqual("Completed", result.ViewName);
             Assert.AreEqual(true, result.ViewData.ModelState.IsValid);
